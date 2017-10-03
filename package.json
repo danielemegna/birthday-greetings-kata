@@ -1,0 +1,16 @@
+{
+  "name": "birthday-greetings",
+  "version": "1.0.0",
+  "description": "The exercise aims to implement a birthday greetings software that uses emails to greet his users.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.0",
+    "sinon": "^4.0.0"
+  }
+}
