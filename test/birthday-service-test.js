@@ -51,8 +51,8 @@ describe('BirthdayService', () => {
     it('send an email to the employee born today', () => {
       const today = moment('2017-10-07')
       const storedEmployee = [
-        new Employee('Filippo', 'Verdi', '03/01/1990', 'filippo.verdi@github.com'),
-        new Employee('Daniele', 'Megna', '19/09/1990', 'megna.dany@github.com')
+        new Employee('Filippo', 'Verdi', moment('1990-10-07'), 'filippo.verdi@github.com'),
+        new Employee('Daniele', 'Megna', moment('1990-09-19'), 'megna.dany@github.com')
       ]
       const employeeRepository = { all: () => {} }
       sinon.stub(employeeRepository, 'all').returns(storedEmployee)
