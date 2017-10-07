@@ -63,6 +63,27 @@ describe('BirthdayService', () => {
       mockEmailService.verify()
     })
 
+    it('send an email when is an employee birthday', () => {
+      const employeeRepository = stubEmployeeRepository([
+        new Employee('Filippo', 'Verdi', moment('1990-10-07'), 'filippo.verdi@github.com'),
+        new Employee('Gabriele', 'Rossi', moment('1988-10-07'), 'gabriele.rossi@github.com'),
+        new Employee('Daniele', 'Megna', moment('1990-09-19'), 'megna.dany@github.com')
+      ])
+      const emailService = stubEmailService()
+      const mockEmailService = sinon.mock(emailService)
+      const service = new BirthdayService(employeeRepository, emailService)
+
+      const mailForFilippo = new Email('Happy birthday!', 'Happy birthday, dear Filippo!', 'filippo.verdi@github.com')
+      const mailForGabriele = new Email('Happy birthday!', 'Happy birthday, dear Gabriele!', 'gabriele.rossi@github.com')
+      mockEmailService.expects('send').exactly(1).withArgs(mailForFilippo)
+      mockEmailService.expects('send').exactly(1).withArgs(mailForGabriele)
+
+      const today = moment('2017-10-07')
+      service.sendGreetings(today)
+
+      mockEmailService.verify()
+    })
+
   })
 
 })
