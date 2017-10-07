@@ -16,59 +16,63 @@ describe('BirthdayService', () => {
   describe('sendGreetings', () => {
 
     it('do nothing with no stored employee', () => {
-      const today = moment('2017-10-07')
-      const employeeRepository = { all: () => {} }
-      sinon.stub(employeeRepository, 'all').returns([])
-      const emailService = { send: () => {} }
-      const mock = sinon.mock(emailService)
-      mock.expects('send').never()
+      const employeeRepository = stubEmployeeRepository([])
+      const emailService = stubEmailService()
+      const mockEmailService = sinon.mock(emailService)
+      const service = new BirthdayService(stubEmployeeRepository([]), emailService)
 
-      const service = new BirthdayService(employeeRepository, emailService)
+      mockEmailService.expects('send').never()
 
-      service.sendGreetings(today)
+      const anyDate = moment('2017-10-07')
+      service.sendGreetings(anyDate)
 
-      mock.verify()
+      mockEmailService.verify()
     })
 
     it('do nothing when there are no birthday', () => {
-      const today = moment('2017-10-07')
-      const storedEmployee = [
+      const employeeRepository = stubEmployeeRepository([
         new Employee('Daniele', 'Megna', moment('1990-09-19'), 'megna.dany@github.com')
-      ]
-      const employeeRepository = { all: () => {} }
-      sinon.stub(employeeRepository, 'all').returns(storedEmployee)
-      const emailService = { send: () => {} }
-      const mock = sinon.mock(emailService)
-      mock.expects('send').never()
+      ])
+      const emailService = stubEmailService()
+      const mockEmailService = sinon.mock(emailService)
+      const service = new BirthdayService(stubEmployeeRepository([]), emailService)
 
-      const service = new BirthdayService(employeeRepository, emailService)
+      mockEmailService.expects('send').never()
 
+      const today = moment('2017-10-07')
       service.sendGreetings(today)
 
-      mock.verify()
+      mockEmailService.verify()
     })
 
-    it('send an email to the employee born today', () => {
-      const today = moment('2017-10-07')
-      const storedEmployee = [
+    it('send an email when is an employee birthday', () => {
+      const employeeRepository = stubEmployeeRepository([
         new Employee('Filippo', 'Verdi', moment('1990-10-07'), 'filippo.verdi@github.com'),
         new Employee('Daniele', 'Megna', moment('1990-09-19'), 'megna.dany@github.com')
-      ]
-      const employeeRepository = { all: () => {} }
-      sinon.stub(employeeRepository, 'all').returns(storedEmployee)
-      const emailService = { send: () => {} }
-
-      const expectedEmail = new Email('Happy birthday!', 'Happy birthday, dear Filippo!', 'filippo.verdi@github.com')
-      const mock = sinon.mock(emailService)
-      mock.expects('send').exactly(1).withArgs(expectedEmail)
-
+      ])
+      const emailService = stubEmailService()
+      const mockEmailService = sinon.mock(emailService)
       const service = new BirthdayService(employeeRepository, emailService)
 
+      const expectedEmail = new Email('Happy birthday!', 'Happy birthday, dear Filippo!', 'filippo.verdi@github.com')
+      mockEmailService.expects('send').exactly(1).withArgs(expectedEmail)
+
+      const today = moment('2017-10-07')
       service.sendGreetings(today)
 
-      mock.verify()
+      mockEmailService.verify()
     })
 
   })
 
 })
+
+function stubEmployeeRepository(storedEmployees) {
+  const employeeRepository = { all: () => {} }
+  sinon.stub(employeeRepository, 'all').returns(storedEmployees)
+  return employeeRepository
+}
+
+function stubEmailService() {
+  return { send: () => {} }
+}
