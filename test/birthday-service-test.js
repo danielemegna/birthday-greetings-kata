@@ -63,7 +63,7 @@ describe('BirthdayService', () => {
       mockEmailService.verify()
     })
 
-    it('send an email when is an employee birthday', () => {
+    it('send an email for every single birthday', () => {
       const employeeRepository = stubEmployeeRepository([
         new Employee('Filippo', 'Verdi', moment('1990-10-07'), 'filippo.verdi@github.com'),
         new Employee('Gabriele', 'Rossi', moment('1988-10-07'), 'gabriele.rossi@github.com'),

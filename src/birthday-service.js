@@ -15,8 +15,7 @@ function BirthdayService(employeeRepository, emailService) {
   function hasBirthdayOn(today) {
     return function(employee) {
       const employeeDateOfBirth = employee.dateOfBirth
-      return employeeDateOfBirth.month() == today.month() &&
-        employeeDateOfBirth.date() == today.date()
+      return employeeDateOfBirth.month() == today.month() && employeeDateOfBirth.date() == today.date()
     }
   }
 
