@@ -1,3 +1,5 @@
+const Employee = require('../entities/employee')
+
 function FSEmployeeRepository(fileContent) {
 
   this.fileContent = fileContent 

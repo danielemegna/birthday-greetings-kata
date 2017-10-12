@@ -2,6 +2,7 @@ const
   chai = require('chai')
   expect = chai.expect
   FSEmployeeRepository = require('../src/repositories/fs-employee-repository')
+  Employee = require('../src/entities/employee')
 
 describe('FSEmployeeRepository', () => {
 
@@ -19,7 +20,11 @@ describe('FSEmployeeRepository', () => {
         "Doe, John, 1982/10/08, john.doe@foobar.com"
 
       const repo = new FSEmployeeRepository(fileContent)
-      expect(repo.all()).to.have.lengthOf(1)
+      const employees = repo.all()
+      expect(employees).to.have.lengthOf(1)
+
+      const firstEmployee = employees[0]
+      // TBC
     })
 
 
