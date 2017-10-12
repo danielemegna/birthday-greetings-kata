@@ -1,14 +1,14 @@
 const 
   chai = require('chai')
   expect = chai.expect
-  FSBirthdayRepository = require('../src/repositories/fs-employee-repository')
+  FSEmployeeRepository = require('../src/repositories/fs-employee-repository')
 
-describe('FSBirthdayRepository', () => {
+describe('FSEmployeeRepository', () => {
 
   describe('all method', () => {
 
     it('returns an empty array when created from an empty string', () => {
-      const repo = new FSBirthdayRepository('')
+      const repo = new FSEmployeeRepository('')
       expect(repo.all()).to.have.lengthOf(0)
       expect(repo.all()).to.deep.eq([])
     })
@@ -18,7 +18,7 @@ describe('FSBirthdayRepository', () => {
         "last_name, first_name, date_of_birth, email\n" +
         "Doe, John, 1982/10/08, john.doe@foobar.com"
 
-      const repo = new FSBirthdayRepository(fileContent)
+      const repo = new FSEmployeeRepository(fileContent)
       expect(repo.all()).to.have.lengthOf(1)
     })
 

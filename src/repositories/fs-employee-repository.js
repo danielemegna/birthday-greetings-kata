@@ -1,4 +1,4 @@
-function FSBirthdayRepository(fileContent) {
+function FSEmployeeRepository(fileContent) {
 
   this.fileContent = fileContent 
 
@@ -14,4 +14,4 @@ function FSBirthdayRepository(fileContent) {
   
 }
 
-module.exports = FSBirthdayRepository
+module.exports = FSEmployeeRepository
