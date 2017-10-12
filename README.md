@@ -64,5 +64,5 @@ Docker dev-ready env:
 $ docker run --rm -itv $PWD:/app -w /app node:alpine sh
 /app # npm install
 /app # npm test
-/app # ./node_modules/mocha/bin/mocha --watch
+/app # npm run watch
 ```
