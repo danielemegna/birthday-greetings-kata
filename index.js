@@ -1,4 +1,4 @@
-function processFile() {
+window.processFile = function () {
   if(!isBrowserSupported)
     return
 
