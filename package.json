@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha",
     "watch": "mocha --watch",
+    "bundle": "webpack index.js bundle.js",
     "serve": "http-server -p 8080 -c-1"
   },
   "author": "",

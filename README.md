@@ -65,5 +65,6 @@ $ docker run --rm -itv $PWD:/app -w /app node:alpine sh
 /app # npm install    # install dependencies
 /app # npm test       # run node tests
 /app # npm run watch  # watch on node tests
+/app # npm run bundle # bundle webpack javascript file
 /app # npm run serve  # serve html application
 ```
