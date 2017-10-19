@@ -61,7 +61,7 @@ you can produce.
 
 Docker dev-ready env:
 ```
-$ docker run --rm -itv $PWD:/app -w /app node:alpine sh
+$ docker run --rm -itv $PWD:/app -w /app -p 8080:8080 node:alpine sh
 /app # npm install    # install dependencies
 /app # npm test       # run node tests
 /app # npm run watch  # watch on node tests
