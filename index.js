@@ -1,3 +1,8 @@
+const moment = require('moment')
+  Email = require('./src/entities/email')
+  FSEmployeeRepository = require('./src/repositories/fs-employee-repository')
+  BirthdayService = require('./src/birthday-service')
+
 window.processFile = function () {
   if(!isBrowserSupported)
     return
@@ -6,14 +11,13 @@ window.processFile = function () {
   if(!isFileValid(inputfile))
     return
 
-  const alertEmailService = { send: (email) => alert(email) }
-  const consoleEmailService = { send: (email) => console.log(email) }
 
-  readFile(inputfile, (content) => {
-    // ****** work here!
-    email = "This is the email for file " + content
-    alertEmailService.send(email)
-    consoleEmailService.send(email)
+  readFile(inputfile, (fileContent) => {
+    const employeeRepository = new FSEmployeeRepository(fileContent)
+    const emailService = { send: (email) => console.log(email) }
+    const service = new BirthdayService(employeeRepository, emailService)
+
+    service.sendGreetings(moment())
   })
 }
 
