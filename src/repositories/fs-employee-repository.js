@@ -19,8 +19,8 @@ function FSEmployeeRepository(fileContent) {
   function lineToEmployee(line) {
     const parsed = /([a-zA-Z]+), ([a-zA-Z]+), (\d+\/\d+\/\d+), (.+\@.+\..+)/.exec(line)
     return new Employee(
-      parsed[1],
       parsed[2],
+      parsed[1],
       moment(parsed[3], 'YYYY/MM/DD'),
       parsed[4]
     )
