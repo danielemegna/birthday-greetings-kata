@@ -17,7 +17,7 @@ function FSEmployeeRepository(fileContent) {
   function isHeader(line) { return line.startsWith("last_name") }
 
   function lineToEmployee(line) {
-    const parsed = /([a-zA-Z]+), ([a-zA-Z]+), (\d+\/\d+\/\d+), (.+\@.+\..+)/.exec(line)
+    const parsed = /([a-zA-Z\s]+), ([a-zA-Z\s]+), (\d+\/\d+\/\d+), (.+\@.+\..+)/.exec(line)
     return new Employee(
       parsed[2],
       parsed[1],

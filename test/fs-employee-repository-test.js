@@ -31,6 +31,19 @@ describe('FSEmployeeRepository', () => {
       expect(employees[2].email).to.be.equal('mary.ann@foobar.com')
     })
 
+    it('it works properly with last names within spaces', () => {
+      const fileContent =
+        "last_name, first_name, date_of_birth, email\n" +
+        "Di Prova, Samuele, 1987/07/13, diprova.@github.com"
+      const repo = new FSEmployeeRepository(fileContent)
+
+      const employees = repo.all()
+
+      expect(employees).to.have.lengthOf(1)
+      expect(employees[0].firstName).to.be.equal('Samuele')
+      expect(employees[0].lastName).to.be.equal('Di Prova')
+    })
+
 
   })
 
