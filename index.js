@@ -14,7 +14,7 @@ window.processFile = function () {
 
   readFile(inputfile, (fileContent) => {
     const employeeRepository = new FSEmployeeRepository(fileContent)
-    const emailService = { send: (email) => console.log(email) }
+    const emailService = { send: (email) => alert(email) }
     const service = new BirthdayService(employeeRepository, emailService)
 
     service.sendGreetings(moment())
