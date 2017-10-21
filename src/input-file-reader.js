@@ -4,6 +4,9 @@ function InputFileReader(myWindow, myDocument, outputFn) {
     if(!isBrowserSupported())
       return
 
+    if(!isDocumentValid())
+      return
+
     const inputfile = myDocument.getElementById('inputfile')
     if(!isFileValid(inputfile))
       return
@@ -22,8 +25,17 @@ function InputFileReader(myWindow, myDocument, outputFn) {
 
 
   function isBrowserSupported() {
-    if (!myWindow.File || !myWindow.FileReader || !myWindow.FileList || !myWindow.Blob) {
+    if (!myWindow || !myWindow.File || !myWindow.FileReader || !myWindow.FileList || !myWindow.Blob) {
       outputFn('The File APIs are not fully supported in this browser.')
+      return false
+    }
+
+    return true
+  }
+
+  function isDocumentValid() {
+    if (!myDocument || !myDocument.getElementById) {
+      outputFn('The provided document seems not valid.')
       return false
     }
 

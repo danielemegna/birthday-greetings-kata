@@ -13,20 +13,13 @@ describe('BirthdayService', () => {
   describe('read', () => {
 
     describe('unsupported browers checks', () => {
-
-      it('checks for windows without File property', () => {
+      
+      it('checks for valid windows', () => {
+        assertBrowserCheckWithWindow(undefined)
+        assertBrowserCheckWithWindow(null)
         assertBrowserCheckWithWindow({ File: undefined, FileReader: true, FileList: true, Blob: true })
-      })
-
-      it('checks for windows without FileReader property', () => {
         assertBrowserCheckWithWindow({ File: true, FileReader: undefined, FileList: true, Blob: true })
-      })
-
-      it('checks for windows without FileList property', () => {
         assertBrowserCheckWithWindow({ File: true, FileReader: true, FileList: undefined, Blob: true })
-      })
-
-      it('checks for windows without Blob property', () => {
         assertBrowserCheckWithWindow({ File: true, FileReader: true, FileList: true, Blob: undefined })
       })
 
@@ -45,5 +38,26 @@ describe('BirthdayService', () => {
       }
 
     })
+
+    it('needs a valid document', () => {
+      assertDocumentCheckWith(undefined)
+      assertDocumentCheckWith(null)
+      assertDocumentCheckWith({})
+    })
+
+    function assertDocumentCheckWith(fakeDocument) {
+        const spyOutputFn = sinon.spy()
+        const spyOnContentLoaded = sinon.spy()
+        const fakeWindow = { File: true, FileReader: true, FileList: true, Blob: true }
+
+        const reader = new InputFileReader(fakeWindow, fakeDocument, spyOutputFn)
+
+        reader.read('anyElementId', spyOnContentLoaded)
+
+        expect(spyOutputFn.calledOnce).to.be.true
+        expect(spyOutputFn.withArgs('The provided document seems not valid.').calledOnce).to.be.true
+        expect(spyOnContentLoaded.notCalled).to.be.true
+    }
+
   })
 })
