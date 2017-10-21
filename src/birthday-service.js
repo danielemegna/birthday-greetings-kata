@@ -1,3 +1,5 @@
+const Email = require('./entities/email')
+
 function BirthdayService(employeeRepository, emailService) {
   
   this.employeeRepository = employeeRepository
