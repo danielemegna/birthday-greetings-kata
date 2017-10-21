@@ -31,4 +31,16 @@ describe('Email', () => {
     expect(first).to.not.deep.equal(second)
   })
 
+  it('has a toString function', () => {
+    const email = new Email('Happy birthday!', 'Happy birthday, dear Daniele!', 'daniele.megna@github.com')
+    const expected =
+      'To: <daniele.megna@github.com>\n' +
+      'Subject: "Happy birthday!"\n' +
+      'Body:\n' +
+      '\n' +
+      'Happy birthday, dear Daniele!'
+
+    expect(email.toString()).to.be.equal(expected)
+  })
+
 })
