@@ -1,14 +1,10 @@
 function InputFileReader(myWindow, myDocument, outputFn) {
 
-  this.myDocument = myDocument
-  this.myWindow = myWindow
-  this.outputFn = outputFn
-
   this.read = function(elementId, onFileReadFn) {
-    if(!isBrowserSupported)
+    if(!isBrowserSupported())
       return
 
-    const inputfile = this.myDocument.getElementById('inputfile')
+    const inputfile = myDocument.getElementById('inputfile')
     if(!isFileValid(inputfile))
       return
 
