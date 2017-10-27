@@ -4,6 +4,7 @@ const
   expect = chai.expect
   InputFileReader = require('../src/input-file-reader')
 
+
 describe('BirthdayService', () => {
 
   it('is defined', () => {
@@ -12,44 +13,45 @@ describe('BirthdayService', () => {
 
   describe('read', () => {
 
-    describe('unsupported browers checks', () => {
-      
-      it('checks for valid windows', () => {
-        assertBrowserCheckWithWindow(undefined)
-        assertBrowserCheckWithWindow(null)
-        assertBrowserCheckWithWindow({ File: undefined, FileReader: true, FileList: true, Blob: true })
-        assertBrowserCheckWithWindow({ File: true, FileReader: undefined, FileList: true, Blob: true })
-        assertBrowserCheckWithWindow({ File: true, FileReader: true, FileList: undefined, Blob: true })
-        assertBrowserCheckWithWindow({ File: true, FileReader: true, FileList: true, Blob: undefined })
+    describe('browser and input validation', () => {
+
+      const validFakeWindow = { File: true, FileReader: true, FileList: true, Blob: true }
+
+      it('needs a valid windows', () => {
+        const invalidWindows = [
+          undefined, null,
+          { File: undefined, FileReader: true, FileList: true, Blob: true },
+          { File: true, FileReader: undefined, FileList: true, Blob: true },
+          { File: true, FileReader: true, FileList: undefined, Blob: true },
+          { File: true, FileReader: true, FileList: true, Blob: undefined }
+        ]
+
+        const anyDocument = null
+        invalidWindows.forEach((w) => {
+          assertValidationWith(w, anyDocument, "The File APIs are not fully supported in this browser.")
+        })
       })
 
-      function assertBrowserCheckWithWindow(fakeWindow) {
+      it('needs a valid document', () => {
+        const invalidDocuments = [ undefined, null, {} ]
+
+        invalidDocuments.forEach((d) => {
+          assertValidationWith(validFakeWindow, d, "The provided document seems not valid.")
+        })
+      })
+
+      it('needs a valid input element', () => {
+          const inputNotPresent = { getElementById: () => { return null } }
+          const inputWithoutFilesProperty = { getElementById: () => { return { files: undefined } } }
+          const inputWithoutSelectedFiles = { getElementById: () => { return { files: [] } } }
+          assertValidationWith(validFakeWindow, inputNotPresent, "Um, couldn't find the inputfile element.")
+          assertValidationWith(validFakeWindow, inputWithoutFilesProperty, "This browser doesn't seem to support the `files` property of file inputs.")
+          assertValidationWith(validFakeWindow, inputWithoutSelectedFiles, "Please select a file before.")
+      })
+
+      function assertValidationWith(fakeWindow, fakeDocument, expectedMessage) {
         const spyOutputFn = sinon.spy()
         const spyOnContentLoaded = sinon.spy()
-        const fakeDocument = null
-
-        const reader = new InputFileReader(fakeWindow, fakeDocument, spyOutputFn)
-
-        reader.read('anyElementId', spyOnContentLoaded)
-
-        expect(spyOutputFn.calledOnce).to.be.true
-        expect(spyOutputFn.withArgs('The File APIs are not fully supported in this browser.').calledOnce).to.be.true
-        expect(spyOnContentLoaded.notCalled).to.be.true
-      }
-
-    })
-
-    it('needs a valid document', () => {
-      assertDocumentCheckWith(undefined)
-      assertDocumentCheckWith(null)
-      assertDocumentCheckWith({})
-    })
-
-    function assertDocumentCheckWith(fakeDocument, expectedMessage = 'The provided document seems not valid.') {
-        const spyOutputFn = sinon.spy()
-        const spyOnContentLoaded = sinon.spy()
-        const fakeWindow = { File: true, FileReader: true, FileList: true, Blob: true }
-
         const reader = new InputFileReader(fakeWindow, fakeDocument, spyOutputFn)
 
         reader.read('anyElementId', spyOnContentLoaded)
@@ -57,16 +59,8 @@ describe('BirthdayService', () => {
         expect(spyOutputFn.calledOnce).to.be.true
         expect(spyOutputFn.withArgs(expectedMessage).calledOnce).to.be.true
         expect(spyOnContentLoaded.notCalled).to.be.true
-    }
+      }
 
-    it('needs a valid input element', () => {
-        const inputNotPresent = { getElementById: () => { return null } }
-        const inputWithoutFilesProperty = { getElementById: () => { return { files: undefined } } }
-        const inputWithoutSelectedFiles = { getElementById: () => { return { files: [] } } }
-        assertDocumentCheckWith(inputNotPresent, "Um, couldn't find the inputfile element.")
-        assertDocumentCheckWith(inputWithoutFilesProperty, "This browser doesn't seem to support the `files` property of file inputs.")
-        assertDocumentCheckWith(inputWithoutSelectedFiles, "Please select a file before.")
     })
-
   })
 })
