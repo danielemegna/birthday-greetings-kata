@@ -54,7 +54,7 @@ function InputFileReader(myWindow, myDocument, outputFn) {
     }
 
     if (!inputfile.files[0]) {
-      outputFn("Please select a file before clicking 'Load'")
+      outputFn("Please select a file before.")
       return false
     }
 

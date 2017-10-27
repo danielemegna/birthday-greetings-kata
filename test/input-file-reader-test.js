@@ -45,7 +45,7 @@ describe('BirthdayService', () => {
       assertDocumentCheckWith({})
     })
 
-    function assertDocumentCheckWith(fakeDocument) {
+    function assertDocumentCheckWith(fakeDocument, expectedMessage = 'The provided document seems not valid.') {
         const spyOutputFn = sinon.spy()
         const spyOnContentLoaded = sinon.spy()
         const fakeWindow = { File: true, FileReader: true, FileList: true, Blob: true }
@@ -55,23 +55,17 @@ describe('BirthdayService', () => {
         reader.read('anyElementId', spyOnContentLoaded)
 
         expect(spyOutputFn.calledOnce).to.be.true
-        expect(spyOutputFn.withArgs('The provided document seems not valid.').calledOnce).to.be.true
+        expect(spyOutputFn.withArgs(expectedMessage).calledOnce).to.be.true
         expect(spyOnContentLoaded.notCalled).to.be.true
     }
 
     it('needs a valid input element', () => {
-        const fakeWindow = { File: true, FileReader: true, FileList: true, Blob: true }
-        const fakeDocument  = { getElementById: () => { return null } }
-        const spyOutputFn = sinon.spy()
-        const spyOnContentLoaded = sinon.spy()
-
-        const reader = new InputFileReader(fakeWindow, fakeDocument, spyOutputFn)
-
-        reader.read('anyElementId', spyOnContentLoaded)
-
-        expect(spyOutputFn.calledOnce).to.be.true
-        expect(spyOutputFn.withArgs("Um, couldn't find the inputfile element.").calledOnce).to.be.true
-        expect(spyOnContentLoaded.notCalled).to.be.true
+        const inputNotPresent = { getElementById: () => { return null } }
+        const inputWithoutFilesProperty = { getElementById: () => { return { files: undefined } } }
+        const inputWithoutSelectedFiles = { getElementById: () => { return { files: [] } } }
+        assertDocumentCheckWith(inputNotPresent, "Um, couldn't find the inputfile element.")
+        assertDocumentCheckWith(inputWithoutFilesProperty, "This browser doesn't seem to support the `files` property of file inputs.")
+        assertDocumentCheckWith(inputWithoutSelectedFiles, "Please select a file before.")
     })
 
   })
