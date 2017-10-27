@@ -59,5 +59,20 @@ describe('BirthdayService', () => {
         expect(spyOnContentLoaded.notCalled).to.be.true
     }
 
+    it('needs a valid input element', () => {
+        const fakeWindow = { File: true, FileReader: true, FileList: true, Blob: true }
+        const fakeDocument  = { getElementById: () => { return null } }
+        const spyOutputFn = sinon.spy()
+        const spyOnContentLoaded = sinon.spy()
+
+        const reader = new InputFileReader(fakeWindow, fakeDocument, spyOutputFn)
+
+        reader.read('anyElementId', spyOnContentLoaded)
+
+        expect(spyOutputFn.calledOnce).to.be.true
+        expect(spyOutputFn.withArgs("Um, couldn't find the inputfile element.").calledOnce).to.be.true
+        expect(spyOnContentLoaded.notCalled).to.be.true
+    })
+
   })
 })
