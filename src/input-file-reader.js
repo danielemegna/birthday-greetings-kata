@@ -11,12 +11,11 @@ function InputFileReader(myWindow, myDocument, outputFn) {
     if(!isFileValid(inputfile))
       return
 
-
     readFile(inputfile, onFileReadFn)
   }
 
   function readFile(inputfile, onContentLoaded) {
-    const fileReader = new FileReader()
+    const fileReader = new myWindow.FileReader()
     fileReader.onload = ((e) => {
       onContentLoaded(e.target.result)
     })
