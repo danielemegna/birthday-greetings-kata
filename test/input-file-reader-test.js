@@ -3,6 +3,7 @@ const
   sinon = require('sinon')
   expect = chai.expect
   InputFileReader = require('../src/input-file-reader')
+  fn = () => {}
 
 
 describe('BirthdayService', () => {
@@ -62,5 +63,17 @@ describe('BirthdayService', () => {
       }
 
     })
+
+    xit('calls onContentLoaded callback with file content', () => {
+      const anElementId = 'anElementId'
+      const mockWindow = sinon.mock({ File: fn, FileReader: fn, FileList: fn, Blob: fn })
+      const mockDocument = sinon.mock({ getElementById: fn })
+      const spyOutputFn = sinon.spy()
+      const spyOnContentLoaded = sinon.spy()
+      const reader = new InputFileReader(fakeWindow, fakeDocument, spyOutputFn)
+
+      reader.read(anElementId, spyOnContentLoaded)
+    })
+
   })
 })
