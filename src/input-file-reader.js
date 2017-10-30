@@ -1,6 +1,6 @@
 function InputFileReader(myWindow, myDocument, outputFn) {
 
-  this.read = function(elementId, onFileReadFn) {
+  this.read = function(elementId, onContentLoaded) {
     if(!isBrowserSupported())
       return
 
@@ -11,7 +11,7 @@ function InputFileReader(myWindow, myDocument, outputFn) {
     if(!isFileValid(inputfile))
       return
 
-    readFile(inputfile, onFileReadFn)
+    readFile(inputfile, onContentLoaded)
   }
 
   function readFile(inputfile, onContentLoaded) {
