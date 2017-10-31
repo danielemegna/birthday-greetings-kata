@@ -2,9 +2,9 @@ const
   chai = require('chai')
   sinon = require('sinon')
   expect = chai.expect
+  assert = sinon.assert
   InputFileReader = require('../src/input-file-reader')
   fn = () => {}
-
 
 describe('BirthdayService', () => {
 
@@ -57,9 +57,9 @@ describe('BirthdayService', () => {
 
         reader.read('anyElementId', spyOnContentLoaded)
 
-        expect(spyOutputFn.calledOnce).to.be.true
-        expect(spyOutputFn.withArgs(expectedMessage).calledOnce).to.be.true
-        expect(spyOnContentLoaded.notCalled).to.be.true
+        assert.calledOnce(spyOutputFn)
+        assert.calledWith(spyOutputFn, expectedMessage)
+        assert.notCalled(spyOnContentLoaded)
       }
 
     })
